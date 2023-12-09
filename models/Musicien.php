@@ -46,6 +46,20 @@
             $this->musician_password = $this->password;
         }
 
+        public function createMusicien() {
+            global $db ;
+            $requette = 'INSERT INTO musicien (musician_name,musician_first_name, musician_last_name , musician_pseudo, musician_gender, musician_phone , musician_facebook, musician_instagram, musician_twitter, musician_picture,
+            musician_official, musician_email, musician_password, musician_gender_music VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
+
+            $statement = $db -> prepare($requette);
+            $execute  = $statement -> execute( array($this -> getMusician_nom(),
+            $this -> getMusician_prenom(),$this -> getMusician_postnom(),$this -> getMusician_pseudo(), $this -> getMusician_g, ));
+
+
+
+
+        }
+
         public function getIdMusicien() {
             global $db;
 
@@ -61,6 +75,44 @@
                 } else return null;
             } else return null;
         }
+
+        public function getMusicians () {
+            global $db ; 
+           
+
+            $requette = 'SELECT * FROM musicien';
+            $statement = $db -> prepare($requette);
+           
+            
+
+        }
+
+
+        /**
+         * Returns the Musician Object by id 
+         * @param mixed $musician_id
+         * 
+         * 
+         */
+        public function getMusicianById ($musician_id) {
+            global $db ;
+            $requete = 'SELECT * FROM musicien WHERE id_musicien = ?';
+            $statement = $db -> prepare($requete);
+            $execute = $statement -> execute (array($musician_id));
+           
+            if ($execute) {
+               while ($data = $statement -> fetch()) {
+                $musicien  = new Musicien($data['musician_pseudo'],$data['musician_facebook'],
+                $data['musician_instagram'], $data['musician_twitter'],
+                $data['musician_official'], $data['musician_gender_music']);
+               }
+
+               return $musicien;
+            } else return null;
+
+        }
+
+    
              
 
         
