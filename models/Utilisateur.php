@@ -53,10 +53,10 @@
         }
 
 
-        // abstract function creeCompte();
+        abstract function creeCompte();
         // abstract function sourceAUnAbonnement();
         // abstract function changerAbonnement();
-        // abstract function modifierIdentifiants();
+        abstract function modifierIdentifiants();
         // abstract function receVoirNotifications();
         // abstract function recupererMotDePasse();
         // abstract function faireDesRecherches();
