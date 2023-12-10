@@ -20,8 +20,7 @@
             $musician_instagram, $musician_twitter, $musician_official,
             $musician_gender_music, $musician_gender) {
 
-            parent::__construct(
-                $nom, $prenom, $postnom, $email, $imageTitle, 
+            parent::__construct($nom, $prenom, $postnom, $email, $imageTitle, 
                 $phone, $pays, $password);
             
             $this->musician_pseudo = $musician_pseudo;
@@ -67,9 +66,41 @@
             return $created;
         }
 
-        public function modifierIdentifiants($id){
+        public function modifierIdentifiants(
+            $id, $nom, $prenom, $postnom, $email, $imageTitle, $phone, 
+            $pays, $password,$musician_pseudo, $musician_facebook, 
+            $musician_instagram, $musician_twitter, $musician_official,
+            $musician_gender_music, $musician_gender){
             global $db ;
-            // $requette = 'UPDATE musicien SET '
+            $result = false ;
+            $requette = 'UPDATE musicien SET  musician_pseudo = ?,musician_nom = ?,musician_prenom = ?, musician_postnom = ? , 
+            musician_email = ?, musician_gender = ? , musician_phone = ?,musician_facebook = ?, 
+            musician_instagram = ?, musician_twitter = ?, musician_profile = ?,musician_pays = ?
+            musician_official = ?,musician_password = ? , musician_gender_music =? WHERE  id_musician = ?';
+            $statement = $db -> prepare($requette);
+            $execute  = $statement -> execute(array(
+                $musician_pseudo,
+                $nom,
+                $prenom,
+                $postnom,
+                $email,
+                $musician_gender,
+                $phone,
+                $musician_facebook,
+                $musician_instagram,
+                $musician_twitter,
+                $imageTitle,
+                $pays,
+                $musician_official,
+                $password,
+                $musician_gender_music,
+                $id, 
+            ));
+
+            if ($execute) {
+               $result = true ;
+            }
+            return $result;
         }
 
         /**
