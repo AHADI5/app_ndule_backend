@@ -9,29 +9,24 @@
         private $client_gender;
 
 
-        private $client_nom;
-        private $client_prenom;
-        private $client_postnom;
-        private $client_email;
-        private $client_profile;
-        private $client_phone;
-        private $client_pays;
-        private $client_password;
+     
+        public function __construct(
+                $nom, $prenom, $postnom, $email, $imageTitle, $phone, 
+                $pays, $password,$client_pseudo,$client_gender) {
+    
+                parent::__construct($nom, $prenom, $postnom, $email, $imageTitle, 
+                    $phone, $pays, $password);
+                
+                $this->client_pseudo = $client_pseudo;
+                $this->client_gender = $client_gender;
+            }
 
-        public function __construct($client_pseudo, $client_gender) {
-            parent::__construct($this->nom, $this->prenom, $this->postnom, $this->email, $this->imageTitle, $this->phone, $this->pays, $this->password);
+        public function creeCompte(){
 
-            $this->client_pseudo = $client_pseudo;
-            $this->client_gender = $client_gender;
+        }
 
-            $this->client_nom = $this->nom;
-            $this->client_prenom = $this->prenom;
-            $this->client_postnom = $this->postnom;
-            $this->client_email = $this->email;
-            $this->client_profile = $this->imageTitle;
-            $this->client_phone = $this->phone;
-            $this->client_pays = $this->pays;
-            $this->client_password = $this->password;
+        public function modifierIdentifiants(){
+
         }
 
         public function getIdClient() {
@@ -39,7 +34,7 @@
 
             $requete = 'SELECT id_client FROM client WHERE client_pseudo = ? AND client_phone = ?';
             $statement = $db->prepare($requete);
-            $execute = $statement->execute(array($this->getClient_pseudo(),$this->getClient_phone()));
+            $execute = $statement->execute(array($this->getClient_pseudo(),$this->getPhone()));
 
             if ($execute) {
                 if($data = $statement -> fetch()){
@@ -112,10 +107,7 @@
         /**
          * Get the value of client_nom
          */ 
-        public function getClient_nom()
-        {
-                return $this->client_nom;
-        }
+    
 
         /**
          * Set the value of client_nom
@@ -134,11 +126,7 @@
         /**
          * Get the value of client_prenom
          */ 
-        public function getClient_prenom()
-        {
-                return $this->client_prenom;
-        }
-
+  
         /**
          * Set the value of client_prenom
          *
@@ -153,13 +141,6 @@
 
         
 
-        /**
-         * Get the value of client_postnom
-         */ 
-        public function getClient_postnom()
-        {
-                return $this->client_postnom;
-        }
 
         /**
          * Set the value of client_postnom
@@ -178,10 +159,7 @@
         /**
          * Get the value of client_email
          */ 
-        public function getClient_email()
-        {
-                return $this->client_email;
-        }
+
 
         /**
          * Set the value of client_email
@@ -200,10 +178,7 @@
         /**
          * Get the value of client_profile
          */ 
-        public function getClient_profile()
-        {
-                return $this->client_profile;
-        }
+    
 
         /**
          * Set the value of client_profile
@@ -222,10 +197,7 @@
         /**
          * Get the value of client_phone
          */ 
-        public function getClient_phone()
-        {
-                return $this->client_phone;
-        }
+   
 
         /**
          * Set the value of client_phone
@@ -244,11 +216,6 @@
         /**
          * Get the value of client_pays
          */ 
-        public function getClient_pays()
-        {
-                return $this->client_pays;
-        }
-
         /**
          * Set the value of client_pays
          *
@@ -263,13 +230,7 @@
 
         
 
-        /**
-         * Get the value of client_password
-         */ 
-        public function getClient_password()
-        {
-                return $this->client_password;
-        }
+     
 
         /**
          * Set the value of client_password
