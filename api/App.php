@@ -10,19 +10,20 @@
     include_once '../model/Musicien.php';
 
     $app = AppFactory::create();
+
     $app->get('/api/auth/online_user', function (Request $request, Response $response) 
     {        
         $online_user = Auth::countOnlineUsers();
         $response = json_encode($online_user,JSON_PRETTY_PRINT);      
         
-        return $response->with_header('content-type : application/json');
+        return $response;
     });
 
 
     //  ---- MISE A JOURS ----
     
-    $app->post('/musicien/{id}', function ($request, $response, $args) {
-        $id = $args['id'];
+    $app->put('/musicien/{id}', function (Request $request,Response $response, $args) {
+        $id = $request-> getAttribute('id');
         $data = $request->getParsedBody();
         
         Musicien::setMusicianInfos($id, $data);     
@@ -33,23 +34,32 @@
 
     // --- VERIFIER SI LE COMPTE EST OFFICIEL ---
 
-    $app->get('/musicien/{id}', function ($request, $response, $args) {
-        $id = $args['id'];
-       
+    $app->get('/api/musicien/{id}/isOfficial', function ( Request $request, Response $response, $args) {
+        $id = $request->getAttribute('id');       
         
-        Musicien::isOfficial($id);  
+        $response = Musicien::isOfficial($id);     
     
-    
-        return $response->withHeader('Location', '/')->withStatus(302);
+        return $response ;
     });
 
 
      //  ---- ARCHIVER ALBUM ----
     
-     $app->post('/album/{id}', function ($request, $response, $args) {
-        $id = $args['id'];        
-        
-        Album::archiver_album($id);      
+     $app->put('/api/album/{idMusicien}/album/{idAlbum}/archiver', function (Request $request, Response $response, $args) {
     
-        return $response->withHeader('Location', '/')->withStatus(302);
+        $idMusicien = $request->getAttribute('idMusicien');
+        $idAlbum = $request->getAttribute('idAlbum');
+        
+        $response = Album::archiver_album($idMusicien, $idAlbum);      
+    
+        return $response;
+    });
+
+    $app->get('/musiciens/{gender}', function (Request $request, Response $response, $args) {
+    
+        $gender = $request->getAttribute('gender');        
+        
+        $response = Musicien::getMusiciansByGender($gender);      
+    
+        return $response;
     });

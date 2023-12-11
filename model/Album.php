@@ -1,15 +1,20 @@
 <?php
+include_once ("../config/Db.php");
+
 class Album{
 
-    public static function archiver_album($albumId){
-        if (isset($_POST['album_id'])) {
-            $albumId = $_POST['album_id'];
+    public static function archiver_album($idMusicien,$idAlbum) {
+        if (isset($id)) {
+            
+            $db = new Db();
+            $db->connect();
         
             // Mettre à jour la base de données pour marquer l'album comme archivé
-            $sql = "UPDATE albums SET archived = 1 WHERE id = :album_id";
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':album_id', $albumId, PDO::PARAM_INT);
+            $stmt = $db->prepare("UPDATE album SET ARCHIVED = 1 WHERE id_musicien = :idMusicien AND id_album = :idAlbum");
+            $stmt->bindParam(':idMusicien', $idMusicien, PDO::PARAM_INT);
+            $stmt->bindParam(':idAlbum', $idAlbum, PDO::PARAM_INT);
             $stmt->execute();
+
         
             // Répondre à la requête AJAX (par exemple, avec un message JSON)
             echo json_encode(['success' => true, 'message' => 'Album archivé avec succès']);

@@ -1,35 +1,24 @@
 <?php
+
+
 class Musicien{
-    
-    
+      
 
 
-    function getMusiciansByGender($genderName) {
+    public static function getMusiciansByGender($genderName) {
         // Assuming you have a database connection
-        $pdo = new PDO("mysql:host=localhost;dbname=your_database", "username", "password");
+        $db = new DB();
+        $db ->connect();
     
-        // Perform a join to get musicians by gender
-        $stmt = $pdo->prepare("SELECT musicians.* FROM musicians 
-                               JOIN genders ON musicians.gender_id = genders.id 
-                               WHERE genders.name = :gender");
-        $stmt->bindParam(':gender', $genderName, PDO::PARAM_STR);
-        $stmt->execute();
+       $sql = "SELECT * FROM musicien WHERE MUSICIAN_GENDER_MUSIC = :gender";
+        $stmt = $db->prepare($sql);
+        
+        $stmt->execute([":gender"=> $genderName]);
     
         // Fetch the results
         $musicians = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
         return json_encode($musicians);
-    }
-
-    public static function setMusicianInfos($id, $newInfo = []) {
-        // Assuming you have a database connection
-        $pdo = new PDO("mysql:host=localhost;dbname=your_database", "username", "password");
-    
-        // Perform a query to update musician information
-        $stmt = $pdo->prepare("UPDATE musicians SET info = :new_info WHERE id = :id");
-        $stmt->bindParam(':new_info', $newInfo, PDO::PARAM_STR);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
     }
 
     public static function isOfficial($id) {
