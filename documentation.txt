@@ -67,3 +67,15 @@ DOCUMMENTATION DES API
 	En cas d'erreur la sortie json est : {
 		null
 	}
+
+8. GET /musicians
+
+	Role : Permet de fetch tout les musiciens 
+
+9. POST /musicians 
+
+	Role : permet de creer un musicien
+
+10. GET /musiciansId/{id_musicien}
+
+	Role : permet de get le musicien Par id 

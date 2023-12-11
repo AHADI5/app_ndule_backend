@@ -35,31 +35,36 @@
         public function creeCompte() {
             global $db ;
             $created = false ;
-            $requette = 'INSERT INTO musicien (
-                musician_pseudo,musician_nom,musician_prenom, musician_postnom , 
-                musician_email, musician_gender , musician_phone,musician_facebook, 
-                musician_instagram, musician_twitter, musician_profile,musician_pays
-                musician_official,musician_password, musician_gender_music VALUES
-                (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-
-            $statement = $db -> prepare($requette);
-            $execute  = $statement -> execute( 
-                array(
-                    $this -> getMusician_pseudo(),
-                    $this -> getNom(),
-                    $this -> getPrenom(),
-                    $this -> getPostnom(),
-                    $this -> getEmail (), 
-                    $this -> getMusician_gender(),
-                    $this -> getPhone() , 
-                    $this -> getMusician_facebook(),
-                    $this -> getMusician_instagram() , 
-                    $this -> getMusician_twitter(), 
-                    $this -> getImageTitle(),
-                    $this -> getMusician_official(),
-                    $this -> getPassword() ,
-                    $this -> getMusician_gender_music()
-                ));
+            $requete = 'INSERT INTO MUSICIEN (
+                musician_pseudo, musician_nom, musician_prenom, musician_postnom, 
+                musician_email, musician_gender, musician_phone, musician_facebook, 
+                musician_instagram, musician_twitter, musician_profile, musician_pays,
+                musician_official, musician_password, musician_gender_music) 
+                VALUES (
+                :musician_pseudo, :musician_nom, :musician_prenom, :musician_postnom, 
+                :musician_email, :musician_gender, :musician_phone, :musician_facebook, 
+                :musician_instagram, :musician_twitter, :musician_profile, :musician_pays,
+                :musician_official, :musician_password, :musician_gender_music)';
+            
+            $statement = $db->prepare($requete);
+            $execute = $statement->execute(array(
+                ':musician_pseudo' => $this->getMusician_pseudo(),
+                ':musician_nom' => $this->getNom(),
+                ':musician_prenom' => $this->getPrenom(),
+                ':musician_postnom' => $this->getPostnom(),
+                ':musician_email' => $this->getEmail(),
+                ':musician_gender' => $this->getMusician_gender(),
+                ':musician_phone' => $this->getPhone(),
+                ':musician_facebook' => $this->getMusician_facebook(),
+                ':musician_instagram' => $this->getMusician_instagram(),
+                ':musician_twitter' => $this->getMusician_twitter(),
+                ':musician_profile' => $this->getImageTitle(),
+                ':musician_pays' => $this->getPays(),
+                ':musician_official' => $this->getMusician_official(),
+                ':musician_password' => $this->getPassword(),
+                ':musician_gender_music' => $this->getMusician_gender_music()
+            ));
+            
             if ($execute) {
                 $created  =true ;
             } 
@@ -73,7 +78,7 @@
             $musician_gender_music, $musician_gender){
             global $db ;
             $result = false ;
-            $requette = 'UPDATE musicien SET  musician_pseudo = ?,musician_nom = ?,musician_prenom = ?, musician_postnom = ? , 
+            $requette = 'UPDATE MUSICIEN SET  musician_pseudo = ?,musician_nom = ?,musician_prenom = ?, musician_postnom = ? , 
             musician_email = ?, musician_gender = ? , musician_phone = ?,musician_facebook = ?, 
             musician_instagram = ?, musician_twitter = ?, musician_profile = ?,musician_pays = ?
             musician_official = ?,musician_password = ? , musician_gender_music =? WHERE  id_musician = ?';
@@ -109,7 +114,7 @@
         public function getIdMusicien() {
             global $db;
 
-            $requete = 'SELECT id_musician FROM musicien WHERE musician_pseudo = ? AND musician_phone = ?';
+            $requete = 'SELECT id_musician FROM MUSICIEN WHERE musician_pseudo = ? AND musician_phone = ?';
             $statement = $db->prepare($requete);
             $execute = $statement->execute(array(
                 $this->getMusician_pseudo(),
@@ -127,9 +132,9 @@
         /**
          * Returns a Muscian Object array 
          */
-        public function getMusicians () {
+        public static function getMusicians () {
             global $db ;
-            $requette = 'SELECT * FROM musicien';
+            $requette = 'SELECT * FROM MUSICIEN';
             $statement = $db -> prepare($requette);
             $execute = $statement->execute(array());
             $musicians = [] ;
@@ -169,9 +174,9 @@
          * 
          * 
          */
-        public function getMusicianById ($musician_id) {
+        public static function getMusicianById ($musician_id) {
             global $db ;
-            $requete = 'SELECT * FROM musicien WHERE id_musicien = ?';
+            $requete = 'SELECT * FROM MUSICIEN WHERE id_musicien = ?';
             $statement = $db -> prepare($requete);
             $execute = $statement -> execute (array($musician_id));
            
