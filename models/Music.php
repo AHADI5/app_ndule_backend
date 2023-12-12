@@ -30,6 +30,76 @@
             $this->music_size = $music_size;
         }
 
+        public function uploadMusic() {
+                global $db;
+                $result = false;
+                $requette =  'INSERT INTO MUSIC(id_album, id_musician,
+                                 music_title, music_path, extract_path, music_gender, 
+                                 music_format, music_type, back_image, duration, music_size) 
+                                 VALUES (:id_album, :id_musician, 
+                                         :music_title, :music_path, :extract_path, :music_gender, :music_format, 
+                                         :music_type, :back_image, :duration, :music_size);';
+            
+                $statement = $db->prepare($requette);
+                $execute = $statement->execute(array(
+                    ':id_album' => $this->getId_album(),
+                    ':id_musician' => $this->getId_musicien(),
+                    ':music_title' => $this->getMusic_title(),
+                    ':music_path' => $this->getMusic_path(),
+                    ':extract_path' => $this->getExtrac_path(),
+                    ':music_gender' => $this->getMusic_gender(),
+                    ':music_format' => $this->getMusic_format(),
+                    ':music_type' => $this->getMusic_type(),
+                    ':back_image' => $this->getBack_image(),
+                    ':duration' => $this->getDuration(),
+                    ':music_size' => $this->getMusic_size(),
+                ));
+            
+                if ($execute) {
+                    $result = true;
+                } else {
+                    $result = false;
+                }
+                return $result;
+            }
+            
+            public function getMusicInformations() {
+                global $db;
+                $requette = 'SELECT * FROM MUSIC';
+                $statement = $db->prepare($requette);
+                $execute = $statement->execute(array());
+            
+                $musics = [];
+            
+                if ($execute) {
+                    while ($data = $statement->fetch(PDO::FETCH_ASSOC)) {
+                        $musics[] = [
+                            'id_album' => $data['id_album'],
+                            'id_musician' => $data['id_musician'],
+                            'music_title' => $data['music_title'],
+                            'music_path' => $data['music_path'],
+                            'extract_path' => $data['extract_path'],
+                            'music_gender' => $data['music_gender'],
+                            'music_format' => $data['music_format'],
+                            'music_type' => $data['music_type'],
+                            'back_image' => $data['back_image'],
+                            'duration' => $data['duration'],
+                            'music_size' => $data['music_size']
+                        ];
+                    }
+                }
+                return $musics;
+            }
+            
+
+        public function functionGetMusicById($id) {
+                global $db ;
+                $requette = 'SELECT * FROM MUSIC WHERE id_music = :id_music';
+                $statement = $db->prepare($requette);
+                $execute = $statement->execute(array($id));
+
+        }
+
         public function getIdMusic() {
             global $db;
 

@@ -132,41 +132,41 @@
         /**
          * Returns a Muscian Object array 
          */
-        public static function getMusicians () {
-            global $db ;
+        public static function getMusicians() {
+            global $db;
             $requette = 'SELECT * FROM MUSICIEN';
-            $statement = $db -> prepare($requette);
-            $execute = $statement->execute(array());
-            $musicians = [] ;
-
+            $statement = $db->prepare($requette);
+            $execute = $statement->execute();
+        
+            $musicians = [];
+        
             if ($execute) {
-                while ($data = $statement -> fetch()) {
-                    $muscian = new Musicien(
-                        $data['musician_nom'],
-                        $data['musician_prenom'],
-                        $data['musician_postnom'],
-                        $data['musician_email'],
-                        $data['musician_profile'],
-                        $data['musician_phone'],
-                        $data['musician_pays'],
-                        $data['musician_password'],
-                        $data['musician_pseudo'],
-                        $data['musician_facebook'],
-                        $data['musician_instagram'],
-                        $data['musician_twitter'],
-                        $data['musician_official'],
-                        $data['musician_gender_music'],
-                        $data['musician_gender'],
-                    );
-
-                    array_push($musicians,$muscian);
+                while ($data = $statement->fetch(PDO::FETCH_ASSOC)) {
+                    
+                    $musicians[] = [
+                        'musician_nom' => $data['musician_nom'],
+                        'musician_prenom' => $data['musician_prenom'],
+                        'musician_postnom' => $data['musician_postnom'],
+                        'musician_email' => $data['musician_email'],
+                        'musician_profile' => $data['musician_profile'],
+                        'musician_phone' => $data['musician_phone'],
+                        'musician_pays' => $data['musician_pays'],
+                        'musician_password' => $data['musician_password'],
+                        'musician_pseudo' => $data['musician_pseudo'],
+                        'musician_facebook' => $data['musician_facebook'],
+                        'musician_instagram' => $data['musician_instagram'],
+                        'musician_twitter' => $data['musician_twitter'],
+                        'musician_official' => $data['musician_official'],
+                        'musician_gender_music' => $data['musician_gender_music'],
+                        'musician_gender' => $data['musician_gender'],
+                    ];
                 }
                 return $musicians;
             } else {
                 return [];
             }
         }
-
+        
 
         /**
          * Returns the Musician Object by id 
@@ -176,33 +176,34 @@
          */
         public static function getMusicianById ($musician_id) {
             global $db ;
-            $requete = 'SELECT * FROM MUSICIEN WHERE id_musicien = ?';
+            $requete = 'SELECT * FROM MUSICIEN WHERE id_musician = ?';
             $statement = $db -> prepare($requete);
             $execute = $statement -> execute (array($musician_id));
            
             if ($execute) {
-               while ($data = $statement -> fetch()) {
-                $musicien  = new Musicien(
-                    $data['musician_nom'],
-                    $data['musician_prenom'],
-                    $data['musician_postnom'],
-                    $data['musician_email'],
-                    $data['musician_profile'],
-                    $data['musician_phone'],
-                    $data['musician_pays'],
-                    $data['musician_password'],
-                    $data['musician_pseudo'],
-                    $data['musician_facebook'],
-                    $data['musician_instagram'],
-                    $data['musician_twitter'],
-                    $data['musician_official'],
-                    $data['musician_gender_music'],
-                    $data['musician_gender'],
-                );
-               }
-
-               return $musicien;
-            } else return null;
+                while ($data = $statement->fetch(PDO::FETCH_ASSOC)) {
+                    $musician = [
+                        'musician_nom' => $data['musician_nom'],
+                        'musician_prenom' => $data['musician_prenom'],
+                        'musician_postnom' => $data['musician_postnom'],
+                        'musician_email' => $data['musician_email'],
+                        'musician_profile' => $data['musician_profile'],
+                        'musician_phone' => $data['musician_phone'],
+                        'musician_pays' => $data['musician_pays'],
+                        'musician_password' => $data['musician_password'],
+                        'musician_pseudo' => $data['musician_pseudo'],
+                        'musician_facebook' => $data['musician_facebook'],
+                        'musician_instagram' => $data['musician_instagram'],
+                        'musician_twitter' => $data['musician_twitter'],
+                        'musician_official' => $data['musician_official'],
+                        'musician_gender_music' => $data['musician_gender_music'],
+                        'musician_gender' => $data['musician_gender'],
+                    ];
+                }
+                return $musician;
+            } else {
+                return [];
+            }
 
         }
 
