@@ -15,6 +15,9 @@
         $db = new PDO('mysql:host=localhost;dbname=nduledb', 'root', '', $pdo_options);
         
 
+        $db = new PDO('mysql:host=localhost;dbname=ndule_DB', 'root', 'root', $pdo_options);
+
+
     } catch(Exception $e) {
         die('Erreur : '.$e->getMessage());
     }
