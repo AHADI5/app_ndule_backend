@@ -10,7 +10,10 @@
 
     try {
         $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
+        
+        //Coonnection to database
         $db = new PDO('mysql:host=localhost;dbname=nduledb', 'root', '', $pdo_options);
+        
 
     } catch(Exception $e) {
         die('Erreur : '.$e->getMessage());
