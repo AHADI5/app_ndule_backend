@@ -13,6 +13,64 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 $method = $_SERVER["REQUEST_METHOD"];
 switch ($method) {
     case 'POST':
+        
+        // Getting metaData-image 
+        $jsonField = isset($_POST['meta_data']) ? $_POST['meta_data'] : null;
+         
+        //Extracting Json Data 
+        preg_match_all('/\{.*?\}/s',$jsonField, $matches);
+
+
+        // $matches[0] contains an array of matched JSON objects
+        $jsonObjects = $matches[0];
+        $concatenatedJson = implode('', $jsonObjects);
+
+
+        if ($jsonField == null) {
+            echo json_encode(array('error'=> 'Incorrect data '));
+        } else {
+            $jsonData = json_decode($jsonData, true);
+            echo json_encode($jsonData['back_image']);
+        }
+        
+
+        // Getting Music Background Image 
+
+        if (isset($_FILES['back_image'])) {
+            $music_image = $_FILES['back_image'];
+            if ($files['error'] == UPLOAD_ERR_OK) {
+
+                $uploadDirectory = "../../Media/MusicBackGround/".$music_image;
+                if (move_uploaded_file($music_image, $uploadDirectory)) {
+                    $jsonData["back_image"] = $music_image;
+                    echo json_encode("Uploaded successfully");
+                } else {
+                    echo json_encode("Failed to upload");
+                }
+            }            
+        }
+
+        //Getting Music file 
+
+        if (isset($_FILES['music_title'])) {
+            $music_file  = $_FILES['music_title'];
+            $music_file_name = $_music_file['name'];
+            //Getting File extention
+            $music_file_type = strtolower(pathinfo($music_file_name, PATHINFO_EXTENSION));
+            
+            if (isAudio($music_file_type)) {
+                $musicDirectory  = '../../Media/MusicFiles/MusicAudio/';
+                $jsonData ['music_type'] = "Audio";
+            } else if (isVideo($music_file_type)) {
+                $musicDirectory = '../../Media/MusicFiles/MusicVideo/';
+                $jsonData ['music_type'] = 'Video';
+
+            }
+        }
+
+
+
+
         $data = json_decode(file_get_contents("php://input"), true);
 
         //checking Wether data exists
@@ -56,4 +114,30 @@ switch ($method) {
     default:
         # code...
         break;
+}
+
+/**
+ * This function checks wether , the file is audio one 
+ * 
+ * @param string $file_type
+ * @return  boolean 
+ * 
+ * 
+ */
+function isAudio( $file_type ) {
+    $supportedFormats = ['mp3','wav', 'ogg','aac', 'mp4'];
+    return in_array( $file_type, $supportedFormats );
+}
+
+/**
+ * 
+ * This function checks wether , the file is video one 
+ * 
+ * @param string $file_type
+ * @return  boolean
+ */
+
+function isVideo( $file_type ) {
+    $supportedFormats = ['mp4','avi', 'mkv', 'mov'];
+    return in_array( $file_type, $supportedFormats );
 }

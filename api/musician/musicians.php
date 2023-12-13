@@ -48,7 +48,7 @@ switch ($method) {
                     $uploadedFileName  = $files['name'];
                     
                     if (move_uploaded_file($files['tmp_name'], $uploadedDirectory)) {
-                        $data['musician_profile'] = $uploadedFileName;
+                        $jsonData['musician_profile'] = $uploadedFileName;
                         echo json_encode("Picture uploaded Successfully");
                     } else echo json_encode("Failed to Upload");
                 }
