@@ -19,62 +19,58 @@ switch ($method) {
  */
 
     case 'POST':
-        echo json_encode($method);
-        $data = json_decode(file_get_contents("php://input") , true);
-
-        //Profile picture issue 
+        // echo json_encode($method);
+        // $data = json_decode(file_get_contents("php://input") , true);
 
         
-
-        // echo json_encode($data['musician_gender_music']);
+        $jsonField  = isset($_POST['data']) ? trim($_POST['data']) :null;
         
-        //Checking wether Data exists 
+        //Extracting Json Data 
+        preg_match_all('/\{.*?\}/s',$jsonField, $matches);
 
-        if (isset($data['musician_pseudo']) &&
-        isset($data['musician_nom']) &&
-        isset($data['musician_prenom']) &&
-        isset($data['musician_postnom']) &&
-        isset($data['musician_email']) &&
-        isset($data['musician_gender']) &&
-        isset($data['musician_phone']) &&
-        isset($data['musician_facebook']) &&
-        isset($data['musician_instagram']) &&
-        isset($data['musician_twitter']) &&
-        isset($data['musician_pays']) &&
-        isset($data['musician_official']) &&
-        isset($data['musician_password']) &&
-        isset($data['musician_gender_music'])) {
-            if (   isset($_FILES['musician_profile']) ) {
+        // $matches[0] contains an array of matched JSON objects
+        $jsonObjects = $matches[0];
+        $concatenatedJson = implode('', $jsonObjects);
+
+        if ($jsonField == null) {
+           echo json_encode(array('error'=> 'Incorrect data '));
+        } else {
+            $jsonData = json_decode($concatenatedJson, true);
+            echo json_encode($jsonData['musician_instagram']);
+        }
+
+        if (isset($_FILES['musician_profile']) ) {
                 $files = $_FILES['musician_profile'];
+                echo json_encode($files);
 
-                if ($files['Error'] === UPLOAD_ERR_OK) {
-                    $uploadedDirectory = '/Media/ProfilePictures/';
-                    $uploadedFileName  = $uploadedDirectory . basename($_FILES['name']);
+                if ($files['error'] === UPLOAD_ERR_OK) {
+                    $uploadedDirectory ="../../Media/ProfilePictures/".$files["name"];
+                    $uploadedFileName  = $files['name'];
                     
-                    if (move_uploaded_file($_FILES['tmp_name'], $uploadedFileName)) {
+                    if (move_uploaded_file($files['tmp_name'], $uploadedDirectory)) {
                         $data['musician_profile'] = $uploadedFileName;
                         echo json_encode("Picture uploaded Successfully");
                     } else echo json_encode("Failed to Upload");
                 }
                
-            }
+        }
     
         $musicien = new Musicien(
-                $data['musician_pseudo'],
-                $data['musician_nom'],
-                $data['musician_prenom'],
-                $data['musician_postnom'],
-                $data['musician_email'],
-                $data['musician_gender'],
-                $data['musician_phone'],
-                $data['musician_facebook'],
-                $data['musician_instagram'],
-                $data['musician_twitter'],
-                $data['musician_profile'],
-                $data['musician_pays'],
-                $data['musician_official'],
-                $data['musician_password'],
-                $data['musician_gender_music'] );
+                $jsonData['musician_pseudo'],
+                $jsonData['musician_nom'],
+                $jsonData['musician_prenom'],
+                $jsonData['musician_postnom'],
+                $jsonData['musician_email'],
+                $jsonData['musician_gender'],
+                $jsonData['musician_phone'],
+                $jsonData['musician_facebook'],
+                $jsonData['musician_instagram'],
+                $jsonData['musician_twitter'],
+                $jsonData['musician_profile'],
+                $jsonData['musician_pays'],
+                $jsonData['musician_official'],
+                $jsonData['musician_password'],
+                $jsonData['musician_gender_music'] );
         
          // Creating a musician
          if ($musicien -> creeCompte()) {
@@ -83,11 +79,7 @@ switch ($method) {
             echo json_encode("Account Creation Failed");
          }
        
-        } else {
-            
-            echo json_encode("Provide All Parameters");
-        
-        }
+     
         
         break;
     case "GET":
