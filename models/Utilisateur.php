@@ -56,12 +56,7 @@
         abstract function creeCompte();
         // abstract function sourceAUnAbonnement();
         // abstract function changerAbonnement();
-        abstract function modifierIdentifiants(
-                $id, $nom, $prenom, $postnom, $email, $imageTitle, 
-                $phone, $pays, $password, $musician_pseudo, 
-                $musician_facebook, $musician_instagram, $musician_twitter, 
-                $musician_official, $musician_gender_music, $musician_gender
-        );
+    
         // abstract function receVoirNotifications();
         // abstract function recupererMotDePasse();
         // abstract function faireDesRecherches();

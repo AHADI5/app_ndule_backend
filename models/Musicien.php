@@ -71,43 +71,55 @@
             return $created;
         }
 
-        public function modifierIdentifiants(
-            $id, $nom, $prenom, $postnom, $email, $imageTitle, $phone, 
-            $pays, $password,$musician_pseudo, $musician_facebook, 
-            $musician_instagram, $musician_twitter, $musician_official,
-            $musician_gender_music, $musician_gender){
+        public static function updateInfo($id , $musician_pseudo,$nom,$postnom,
+        $prenom,$email,$musician_gender,$phone,$musician_facebook,
+        $musician_instagram,$musician_twitter,$pays,$password,
+        $musician_gender_music){
             global $db ;
             $result = false ;
-            $requette = 'UPDATE MUSICIEN SET  musician_pseudo = ?,musician_nom = ?,musician_prenom = ?, musician_postnom = ? , 
-            musician_email = ?, musician_gender = ? , musician_phone = ?,musician_facebook = ?, 
-            musician_instagram = ?, musician_twitter = ?, musician_profile = ?,musician_pays = ?
-            musician_official = ?,musician_password = ? , musician_gender_music =? WHERE  id_musician = ?';
-            $statement = $db -> prepare($requette);
-            $execute  = $statement -> execute(array(
-                $musician_pseudo,
-                $nom,
-                $prenom,
-                $postnom,
-                $email,
-                $musician_gender,
-                $phone,
-                $musician_facebook,
-                $musician_instagram,
-                $musician_twitter,
-                $imageTitle,
-                $pays,
-                $musician_official,
-                $password,
-                $musician_gender_music,
-                $id, 
-            ));
+            $requete = 'UPDATE MUSICIEN 
+            SET musician_pseudo = :musician_pseudo,
+                musician_nom = :musician_nom,
+                musician_prenom = :musician_prenom,
+                musician_postnom = :musician_postnom,
+                musician_email = :musician_email,
+                musician_gender = :musician_gender,
+                musician_phone = :musician_phone,
+                musician_facebook = :musician_facebook,
+                musician_instagram = :musician_instagram,
+                musician_twitter = :musician_twitter,
+                musician_pays = :musician_pays,
+                musician_password = :musician_password,
+                musician_gender_music = :musician_gender_music
+            WHERE id_musician = :id';
+
+            $statement = $db->prepare($requete);
+            $execute = $statement->execute([
+                ':musician_pseudo' => $musician_pseudo,
+                ':musician_nom' => $nom,
+                ':musician_prenom' => $prenom,
+                ':musician_postnom' => $postnom,
+                ':musician_email' => $email,
+                ':musician_gender' => $musician_gender,
+                ':musician_phone' => $phone,
+                ':musician_facebook' => $musician_facebook,
+                ':musician_instagram' => $musician_instagram,
+                ':musician_twitter' => $musician_twitter,
+                ':musician_pays' => $pays,
+                ':musician_password' => $password,
+                ':musician_gender_music' => $musician_gender_music,
+                ':id' => $id,
+            ]);
+
 
             if ($execute) {
                $result = true ;
             }
             return $result;
+
         }
 
+ 
         /**
          * Returns Musician Id
          */
@@ -275,9 +287,7 @@
 
     // Getter et Setter pour musician_nom
  
-    public function setMusician_password($musician_password) {
-        $this->musician_password = $musician_password;
-    }
+
 
 
         /**
